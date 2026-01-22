@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Convertisseur de date</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 330px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    .cta {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #d4af37, #ffd700);
+      color: #000;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 6px;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+
+    .result {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #b00020;
+    }
+
+    .copy-msg {
+      font-size: 14px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Convertisseur de date</h2>
+    <div class="cta">👉 Entre ta date et appuie sur Entrée</div>
+
+    <input type="text" id="dateInput" placeholder="21/06/1967">
+
+    <br>
+    <button onclick="convertDate()">🚀 Générer le nouveau format</button>
+    <button onclick="copyResult()">📋 Copier</button>
+
+    <div class="result" id="result"></div>
+    <div class="copy-msg" id="copyMsg"></div>
+  </div>
+
+  <script>
+    let convertedDate = "";
+
+    const input = document.getElementById("dateInput");
+
+    // Lancer la conversion avec la touche Entrée
+    input.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        convertDate();
+      }
+    });
+
+    function convertDate() {
+      const value = input.value.trim();
+      const result = document.getElementById("result");
+      const copyMsg = document.getElementById("copyMsg");
+      copyMsg.textContent = "";
+
+      const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+
+      if (!regex.test(value)) {
+        result.textContent = "❌ Format invalide. Exemple : 21/06/1967";
+        convertedDate = "";
+        return;
+      }
+
+      const [day, month, year] = value.split("/");
+
+      convertedDate = `${year}/${month}/${day}`;
+      result.textContent = "✅ Nouveau format : " + convertedDate;
+    }
+
+    function copyResult() {
+      const copyMsg = document.getElementById("copyMsg");
+
+      if (convertedDate === "") {
+        copyMsg.textContent = "⚠️ Rien à copier.";
+        copyMsg.style.color = "red";
+        return;
+      }
+
+      navigator.clipboard.writeText(convertedDate).then(() => {
+        copyMsg.textContent = "✅ Copié dans le presse-papier !";
+        copyMsg.style.color = "green";
+      });
+    }
+  </script>
+
+</body>
+</html>
